@@ -98,6 +98,8 @@ nginx['real_ip_trusted_addresses'] = [ '192.168.1.0/24', '192.168.2.1', '2001:0d
 # other real_ip config options
 nginx['real_ip_header'] = 'X-Forwarded-For'
 nginx['real_ip_recursive'] = 'on'
+```
+
 
 ## Install with Ansible
 (To be completed)
