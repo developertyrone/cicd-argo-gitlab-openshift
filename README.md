@@ -78,6 +78,26 @@ Next, install the GitLab package. Make sure you have correctly set up your DNS, 
 
     sudo EXTERNAL_URL="https://gitlab.example.com" dnf install -y gitlab-ee
 
+  ### (Optional) Additional Settings to run gitlab behind reverse proxy
+
+      In /etc/gitlab/gitlab.rb
+      external_url 'https://ci.yoursite.com'
+
+      nginx['listen_port'] = 80
+      nginx['listen_https'] = false
+      
+By default, NGINX and GitLab will log the IP address of the connected client.
+
+If your GitLab is behind a reverse proxy, you may not want the IP address of the proxy to show up as the client address.
+
+You can have NGINX look for a different address to use by adding your reverse proxy to the  `real_ip_trusted_addresses`  list:
+
+```
+# Each address is added to the the NGINX config as 'set_real_ip_from <address>;'
+nginx['real_ip_trusted_addresses'] = [ '192.168.1.0/24', '192.168.2.1', '2001:0db8::/32' ]
+# other real_ip config options
+nginx['real_ip_header'] = 'X-Forwarded-For'
+nginx['real_ip_recursive'] = 'on'
 
 ## Install with Ansible
 (To be completed)
