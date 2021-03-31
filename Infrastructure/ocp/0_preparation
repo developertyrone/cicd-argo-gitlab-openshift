@@ -1,0 +1,58 @@
+1. add new vnet port group with different vlan id
+2. install bastion host , 2cpu, 8gb ram, 2 networks, 60gb harddisk, redhat based
+3. Install pfsense, 1 cpu, 1gb ram, 2 networks, 8gb hdd, freebsd 12 or above
+4. Login as Root
+5. set interfaces ip address
+	1. select Lan interface to configure
+	2. enable dhcp
+	3. 10.0.0.254/24
+	4. 10.0.0.1 - 10.0.0.199
+6. shell
+	1. pfctl -d (to disable firewall for wan access webgui)
+	2. be aware this will cause connection block to external network (EX: 192.168.1.1)
+	3. access the pfsense webui thru wan ip
+	4. hostname: pfsense
+	5. domain: ocp.local
+	6. timezone: your time zone
+	7. Block RFC1918 Private Networks -> disable
+	8. save
+7. shell
+  1. pfctl -d (to disable firewall for wan access webgui)
+  2. be aware this will cause connection block to external network (EX: 192.168.1.1)
+	3. access the pfsense webui thru wan ip
+	4. System -> Advanced -> TCP Port -> 8080
+	4. System -> Advanced -> Enable Secure Shell
+	5. Access back with 8080
+	4. Firewall -> Rules -> WAN -> add 8080
+	5. 4. Firewall -> Rules -> WAN -> add 22
+	5. 4. Firewall -> Rules -> WAN -> add 443 -> 10.0.0.200(load balancer ip)
+	5. 4. Firewall -> Rules -> WAN -> add 80
+	5. Firewall -> Rules -> LAN -> change 80 to 8080
+	6. Service -> DNS Resolver -> Disable DNSSEC Support
+8. Service -> DNS Resolver 
+	1. enable dns forwarding
+	2. Disable DNSSEC Support
+	2. adding host override
+	3. adding custom 
+		server:
+private-domain: local
+local-data: "_etcd-server-ssl._tcp.dev.ocp.local 180 IN SRV 0 10 2380 etcd-0.dev.ocp.local."
+local-data: "_etcd-server-ssl._tcp.dev.ocp.local 180 IN SRV 0 10 2380 etcd-1.dev.ocp.local."
+local-data: "_etcd-server-ssl._tcp.dev.ocp.local 180 IN SRV 0 10 2380 etcd-2.dev.ocp.local."
+local-zone: "apps.dev.ocp.local" redirect
+local-data: "apps.dev.ocp.local 86400 IN A 10.0.0.200"
+local-data-ptr: "10.0.0.202 etcd-0.dev.ocp.local"
+local-data-ptr: "10.0.0.203 etcd-1.dev.ocp.local"
+local-data-ptr: "10.0.0.204 etcd-2.dev.ocp.local"
+
+4. Add Host Override Records
+bootstrap	dev.ocp.local	10.0.0.200		 
+haproxy	dev.ocp.local	10.0.0.211		 
+api	dev.ocp.local	Alias for haproxy.dev.ocp.local		
+api-int	dev.ocp.local	Alias for haproxy.dev.ocp.local		
+master01	dev.ocp.local	10.0.0.201		 
+etcd-0	dev.ocp.local	Alias for master01.dev.ocp.local		
+master02	dev.ocp.local	10.0.0.202		 
+etcd-1	dev.ocp.local	Alias for master02.dev.ocp.local		
+master03	dev.ocp.local	10.0.0.203		 
+etcd-2	dev.ocp.local	Alias for master03.dev.ocp.local

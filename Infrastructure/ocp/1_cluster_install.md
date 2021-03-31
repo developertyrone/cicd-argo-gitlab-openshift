@@ -1,7 +1,8 @@
+# Overview
 This version of installation is against the version on or above Openshift 4.6 and Vsphere User Provisioned Infrastructure (UPI)
 
 Network Setup
-1. Install Pfsense
+1. Install Pfsense (follow the steps on 0_preparation)
 
 Prerequisites
 1. Vcenter credentials(In the lab we use admin role):
@@ -10,9 +11,10 @@ Prerequisites
 
 2. Internet access for github.com to download GOVC
 
-3. git clone https://github.com/developertyrone/ocp4.git 
+3. git clone https://github.com/developertyrone/cicd-argo-gitlab-openshift
 
-Follow the steps files
+4. cd /Infrastructure/ocp
+
 
 # For Vsphere (ESXI) template installation (If you have vcenter console you can skip this step by adding template manually )
 1. modify tools/setup_govc.sh
