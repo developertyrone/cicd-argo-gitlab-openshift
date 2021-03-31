@@ -16,12 +16,20 @@ Prerequisites
 4. cd /Infrastructure/ocp
 
 
-# For Vsphere (ESXI) template installation (If you have vcenter console you can skip this step by adding template manually )
-1. modify tools/setup_govc.sh
-2. make setup-govc
+# For Vsphere (ESXI) template installation (If you have vcenter console you can skip this step by adding template manually)
+```
+1. edit tools/setup_govc.sh
+2. source ./tools/setup_govc.sh
+```
 
 # Import VM Template
-1. make import-ova major=4.6 version=4.6.8 store=S300_128_1
+```
+1. make import-ova major=4.6 version=4.6.8 store=<datastore for the ova> 
+
+1. make import-ova major=4.6 version=4.6.8 store=<datastore for the ova> host=
+## To check resource pool
+p.s. make list-vmware-resource-pool
+```
 
 # Install Terraform
 1. make terraform-install-rhel
