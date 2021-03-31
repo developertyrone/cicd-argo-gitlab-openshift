@@ -10,13 +10,33 @@ Either Vsphere/Hyperv/RHV will do
 In this example we leverage the terraform and vsphere
 2vCPU, 4GB ram, 100 GB harddisk(thin provisioning)
 
-## CENTOS 8
+## CENTOS 8 (For Gitlab Server)
 
 1. Install CENTOS
 2. dnf update
 3. disable SELINUX
 4. setup ansible account, ssh-genkey, copy the key
 5. setup ansible account as sudoer
+6. convert the VM to template (URL needed)
+
+## Ubuntu 20.4 (For Gitlab Runner)
+
+1. Install Ubuntu
+2. apt-get Update
+3. Install Docker Engine
+    sudo apt install docker.io
+    sudo systemctl enable --now docker
+    docker run hello-world
+
+    sudo usermod -aG docker ansible
+    sudo usermod -aG docker <your user>
+
+4. setup ansible account, ssh-genkey, copy the key
+    ssh-keygen
+    copy secret key and public key
+5. setup ansible account as sudoer
+    sudo usermod -aG sudo ansible
+
 6. convert the VM to template (URL needed)
 
 # Create VMs
@@ -78,7 +98,104 @@ Next, install the GitLab package. Make sure you have correctly set up your DNS, 
 
     sudo EXTERNAL_URL="https://gitlab.example.com" dnf install -y gitlab-ee
 
-  ### (Optional) Additional Settings to run gitlab behind reverse proxy
+### Enable Gitlab Container Registry behind reverse proxy
+
+```
+server {
+    listen 443 http2 ssl;
+    server_name gl.serveradmin.ru;
+    access_log /var/log/nginx/gl.serveradmin.ru-access.log full;
+    error_log /var/log/nginx/gl.serveradmin.ru-error.log;
+
+    ssl_certificate /etc/letsencrypt/live/gl.serveradmin.ru/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/gl.serveradmin.ru/privkey.pem;
+
+    limit_conn perip 50;
+
+    location /.well-known {
+    root /tmp;
+    }
+
+    location / {
+    proxy_pass http://10.20.50.8:80;
+    proxy_read_timeout      300;
+    proxy_connect_timeout   300;
+    proxy_redirect          off;
+    proxy_set_header        X-Forwarded-Proto https;
+    proxy_set_header        Host              $http_host;
+    proxy_set_header        X-Real-IP         $remote_addr;
+    proxy_set_header        X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Ssl   on;
+    }
+}
+
+server {
+    listen 80;
+    server_name gl.serveradmin.ru;
+    return 301 https://gl.serveradmin.ru$request_uri;
+}
+
+server {
+    listen 443 http2 ssl;
+    server_name rg.serveradmin.ru;
+    access_log /var/log/nginx/rg.serveradmin.ru-access.log full;
+    error_log /var/log/nginx/rg.serveradmin.ru-error.log;
+
+    ssl_certificate /etc/letsencrypt/live/rg.serveradmin.ru/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/rg.serveradmin.ru/privkey.pem;
+
+    limit_conn perip 50;
+
+    location /.well-known {
+    root /tmp;
+    }
+
+    location / {
+    proxy_pass http://10.20.50.8:80;
+    proxy_read_timeout      300;
+    proxy_connect_timeout   300;
+    proxy_redirect          off;
+    proxy_set_header        X-Forwarded-Proto https;
+    proxy_set_header        Host              $http_host;
+    proxy_set_header        X-Real-IP         $remote_addr;
+    proxy_set_header        X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Ssl   on;
+    proxy_set_header        X-Frame-Options   SAMEORIGIN;
+    proxy_cache off;
+    proxy_buffering off;
+    proxy_request_buffering off;
+    proxy_http_version 1.1;
+    }
+}
+
+server {
+    listen 80;
+    server_name rg.serveradmin.ru;
+    return 301 https://rg.serveradmin.ru$request_uri;
+}
+```
+
+```
+external_url 'https://gl.serveradmin.ru'
+nginx['listen_port'] = 80
+nginx['listen_https'] = false
+
+registry_external_url 'https://rg.serveradmin.ru'
+gitlab_rails['registry_enabled'] = true
+registry['enable'] = true
+registry_nginx['enable'] = true
+registry_nginx['proxy_set_headers'] = {
+ "Host" => "$http_host",
+ "X-Real-IP" => "$remote_addr",
+ "X-Forwarded-For" => "$proxy_add_x_forwarded_for",
+ "X-Forwarded-Proto" => "https",
+ "X-Forwarded-Ssl" => "on"
+ }
+registry_nginx['listen_port'] = 80
+registry_nginx['listen_https'] = false
+```
+
+### (Optional) Additional Settings to run gitlab behind reverse proxy
 
       In /etc/gitlab/gitlab.rb
       external_url 'https://ci.yoursite.com'
@@ -103,3 +220,6 @@ nginx['real_ip_recursive'] = 'on'
 
 ## Install with Ansible
 (To be completed)
+
+
+# Install Gitlab runner
