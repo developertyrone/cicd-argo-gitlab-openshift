@@ -29,7 +29,7 @@ download-scripts:
 
 sshkey-generate:
 	ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/ocp-key
-	eval "$(ssh-agent -s)"
+	#eval "$(ssh-agent -s)"
 	ssh-add ~/.ssh/ocp-key
 
 setup-govc:
