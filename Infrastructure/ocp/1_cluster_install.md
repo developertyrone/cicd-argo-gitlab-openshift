@@ -24,9 +24,11 @@ Prerequisites
 
 # Import VM Template
 ```
-1. make import-ova major=4.6 version=4.6.8 store=<datastore for the ova> 
+1. make import-ova major=4.6 version=4.6.8 store=<datastore for the ova> folder=<vm folder>
 
-1. make import-ova major=4.6 version=4.6.8 store=<datastore for the ova> host=
+## For single host
+1. make import-ova major=4.6 version=4.6.8 store=<datastore for the ova> host=<single-host-ip> folder=<vm folder>
+
 ## To check resource pool
 p.s. make list-vmware-resource-pool
 ```
