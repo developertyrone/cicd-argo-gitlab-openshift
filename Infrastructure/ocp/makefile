@@ -51,9 +51,16 @@ install-oc-tools:
 	./install-oc-tools/install-oc-tools.sh --latest $(version)
 
 import-ova:
-	govc import.ova --folder=templates --ds=$(store) --name=rhcos-$(version) https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/$(major)/$(version)/rhcos-vmware.x86_64.ova
+	@if [ -z "$(host)" ]; then \
+        govc import.ova -folder=templates -ds=$(store) -name=rhcos-$(version) https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/$(major)/$(version)/rhcos-vmware.x86_64.ova; \
+    else \
+        govc import.ova -folder=templates -ds=$(store) -host=$(host) -name=rhcos-$(version) https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/$(major)/$(version)/rhcos-vmware.x86_64.ova; \
+    fi
+	
 
 add-worker-nodes:
 	jq -r .infraID openshift/metadata.json
 
+list-vmware-resource-pool:
+	govc find / -type p
 
