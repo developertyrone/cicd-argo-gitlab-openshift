@@ -28,9 +28,9 @@ download-scripts:
 	git clone https://github.com/developertyrone/ocp4.git
 
 sshkey-generate:
-	ssh-keygen -t rsa -b 4096 -N '' -f $HOME/.ssh/ocp-key
+	ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/ocp-key
 	eval "$(ssh-agent -s)"
-	ssh-add $HOME/.ssh/ocp-key
+	ssh-add ~/.ssh/ocp-key
 
 setup-govc:
 	chmod +x ./tools/setup_govc.sh
