@@ -12,8 +12,8 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    path: /opt/nfs/ocp-registry
-    server: manage.ocp.hk.sunlife
+    path: /volume1/ocp/registry
+    server: nas.server.local
   claimRef:
     name: image-registry-pvc
     namespace: openshift-image-registry
