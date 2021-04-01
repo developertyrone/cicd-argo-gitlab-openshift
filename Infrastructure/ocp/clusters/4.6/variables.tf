@@ -72,8 +72,7 @@ data "vsphere_datastore" "servicestore" {
 ## Ignition
 
 provider "ignition" {
-  # https://www.terraform.io/docs/providers/ignition/index.html
-  version = "1.2.1"
+    
 }
 
 variable "ignition" {
