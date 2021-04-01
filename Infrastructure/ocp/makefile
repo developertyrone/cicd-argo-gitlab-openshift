@@ -47,6 +47,7 @@ installation-check:
 	cd openshift; openshift-install wait-for install-complete --log-level debug
 
 update-kubeconfig:
+	mkdir -p ~/.kube
 	cp openshift/auth/kubeconfig ~/.kube/config
 
 install-oc-tools:

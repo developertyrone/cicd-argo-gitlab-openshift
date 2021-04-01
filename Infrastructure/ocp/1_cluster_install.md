@@ -140,11 +140,21 @@ make terraform-init
 make terraform-apply
 ```
 # Check Installation
+```
 make installation-check
-
+```
 # Setup kubeconfig & approve csr
+```
 make update-kubeconfig
 make approve-csr
+```
+# Add new worker node
+```
+//make add-worker-nodes
 
-# Add nodes
-make add-worker-nodes
+Update the clusters\4.6\terraform.tfvars
+Add an entry in worker_ips
+
+make terraform-plan //Check if the update is correct
+make terraform-apply
+```
