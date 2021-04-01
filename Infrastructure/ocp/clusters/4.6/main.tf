@@ -63,8 +63,8 @@ module "bootstrap" {
   count     = "${var.bootstrap_complete ? 0 : 1}"
   name      = "bootstrap.${var.cluster_slug}.${var.cluster_domain}"
   folder    = "${var.vsphere_template_folder}"
-  datastore = data.vsphere_datastore.workerstore.id
-  disk_size = 120 #120
+  datastore = data.vsphere_datastore.servicestore.id
+  disk_size = 100 #120
   memory    = 16384 #16384
   num_cpu   = 4 #4
   ignition  = file(var.bootstrap_ignition_path)
