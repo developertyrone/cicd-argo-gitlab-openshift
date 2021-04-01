@@ -60,7 +60,7 @@ module "worker" {
 
 module "bootstrap" {
   source    = "../../modules/rhcos-static"
-  count     = "${var.bootstrap_complete ? 0 : 1}"
+  count     = var.bootstrap_complete ? 0 : 1
   name      = "bootstrap.${var.cluster_slug}.${var.cluster_domain}"
   folder    = var.vsphere_template_folder
   datastore = data.vsphere_datastore.servicestore.id
@@ -99,7 +99,7 @@ module "lb" {
 
 module "lb_vm" {
   source    = "../../modules/rhcos-static"
-  count     = "${var.enable_lb ? 1 : 0}"
+  count     = var.enable_lb ? 1 : 0
   name      = "haproxy.${var.cluster_slug}.${var.cluster_domain}"
   folder    = var.vsphere_template_folder
   datastore = data.vsphere_datastore.servicestore.id
@@ -144,7 +144,7 @@ module "coredns" {
 
 module "dns_vm" {
   source    = "../../modules/rhcos-static"
-  count     = "${var.enable_dns ? 1 : 0}"
+  count     = var.enable_dns ? 1 : 0
   name      = "coredns.${var.cluster_slug}.${var.cluster_domain}"
   folder    = var.vsphere_template_folder
   datastore = data.vsphere_datastore.servicestore.id
