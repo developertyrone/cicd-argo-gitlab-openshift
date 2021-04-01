@@ -7,7 +7,7 @@ module "master" {
   source    = "../../modules/rhcos-static"
   count     = length(var.master_ips)
   name      = "${format("master%02s", count.index + 1)}.${var.cluster_slug}.${var.cluster_domain}"
-  folder    = "${var.vsphere_template_folder}/redhat/${var.cluster_slug}"
+  folder    = "${var.vsphere_template_folder}"
   datastore = data.vsphere_datastore.masterstore.id
   disk_size = 120 #120
   memory    = 16384 #16384
@@ -34,7 +34,7 @@ module "worker" {
   source    = "../../modules/rhcos-static"
   count     = length(var.worker_ips)
   name      = "${format("worker%02s", count.index + 1)}.${var.cluster_slug}.${var.cluster_domain}"
-  folder    = "${var.vsphere_template_folder}/redhat/${var.cluster_slug}"
+  folder    = "${var.vsphere_template_folder}"
   datastore = data.vsphere_datastore.workerstore.id
   disk_size = 120 #120
   memory    = 16384 #16384
@@ -62,7 +62,7 @@ module "bootstrap" {
   source    = "../../modules/rhcos-static"
   count     = "${var.bootstrap_complete ? 0 : 1}"
   name      = "bootstrap.${var.cluster_slug}.${var.cluster_domain}"
-  folder    = "${var.vsphere_template_folder}/redhat/${var.cluster_slug}"
+  folder    = "${var.vsphere_template_folder}"
   datastore = data.vsphere_datastore.workerstore.id
   disk_size = 120 #120
   memory    = 16384 #16384
@@ -101,7 +101,7 @@ module "lb_vm" {
   source    = "../../modules/rhcos-static"
   count     = "${var.enable_lb ? 1 : 0}"
   name      = "haproxy.${var.cluster_slug}.${var.cluster_domain}"
-  folder    = "${var.vsphere_template_folder}/redhat/${var.cluster_slug}"
+  folder    = "${var.vsphere_template_folder}"
   datastore = data.vsphere_datastore.servicestore.id
   disk_size = 16
   memory    = 1024
@@ -146,7 +146,7 @@ module "dns_vm" {
   source    = "../../modules/rhcos-static"
   count     = "${var.enable_dns ? 1 : 0}"
   name      = "coredns.${var.cluster_slug}.${var.cluster_domain}"
-  folder    = "${var.vsphere_template_folder}/redhat/${var.cluster_slug}"
+  folder    = "${var.vsphere_template_folder}"
   datastore = data.vsphere_datastore.servicestore.id
   disk_size = 16
   memory    = 1024
