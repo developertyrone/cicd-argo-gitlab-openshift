@@ -1,9 +1,5 @@
-Infrastructure/gitlab/terraform/terraform.tfvars
-Infrastructure/gitlab/terraform/terraform.tfstate.backup
-Infrastructure/gitlab/terraform/.terraform/plugins/registry.terraform.io/hashicorp/vsphere/1.24.1/windows_amd64/terraform-provider-vsphere_v1.24.1_x4.exe
-Infrastructure/gitlab/terraform/terraform.tfstate
-Infrastructure/gitlab/terraform/.terraform/plugins/selections.json
+*.tfstate
 /Infrastructure/ocp/00_creds.md
 .terraform
-/Infrastructure/ocp/clusters/4.6/terraform.tfvars
-/Infrastructure/ocp/clusters/4.6/variables.tf
+*.tfvars
+vsphere.yaml

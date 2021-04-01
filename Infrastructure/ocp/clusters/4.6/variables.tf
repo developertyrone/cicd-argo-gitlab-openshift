@@ -31,47 +31,40 @@ variable "vsphere_template_folder" {
 }
 
 provider "vsphere" {
-  #user           = yamldecode(file("~/.config/ocp/vsphere.yaml"))["vsphere-user"]
-  #password       = yamldecode(file("~/.config/ocp/vsphere.yaml"))["vsphere-password"]
-  #vsphere_server = yamldecode(file("~/.config/ocp/vsphere.yaml"))["vsphere-server"]
-
-  user           = "administrator@vcenter.local"
-  password       = "123QWEasd!"
-  vsphere_server = "vcenter.local"
-
+  user           = yamldecode(file("${path.root}/vsphere.yaml"))["vsphere-user"]
+  password       = yamldecode(file("${path.root}/vsphere.yaml"))["vsphere-password"]
+  vsphere_server = yamldecode(file("${path.root}/vsphere.yaml"))["vsphere-server"]
 
   # If you have a self-signed cert
   allow_unverified_ssl = true
 }
 
 data "vsphere_datacenter" "dc" {
-  #name = yamldecode(file("~/.config/ocp/vsphere.yaml"))["vsphere-dc"]
-  name = "Datacenter"
+  name = yamldecode(file("${path.root}/vsphere.yaml"))["vsphere-dc"]
 }
 
 data "vsphere_compute_cluster" "cluster" {
-  #name          = yamldecode(file("~/.config/ocp/vsphere.yaml"))["vsphere-cluster"]
-  name          = "MyHome"
+  name          = yamldecode(file("${path.root}/vsphere.yaml"))["vsphere-cluster"]
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_network" "network" {
-  name          = "OCP4"
+  name          = yamldecode(file("${path.root}/vsphere.yaml"))["vsphere-network"]
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_datastore" "masterstore" {
-  name          = "S300_500_1"
+  name          = yamldecode(file("${path.root}/vsphere.yaml"))["vsphere-master-store"]
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_datastore" "workerstore" {
-  name          = "S2000_1000_2"
+  name          = yamldecode(file("${path.root}/vsphere.yaml"))["vsphere-worker-store"]
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_datastore" "servicestore" {
-  name          = "S2000_1000_2"
+  name          = yamldecode(file("${path.root}/vsphere.yaml"))["vsphere-service-store"]
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
