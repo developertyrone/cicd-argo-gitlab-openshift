@@ -24,6 +24,9 @@ terraform-init:
 terraform-apply:
 	terraform -chdir=clusters/4.6 apply -auto-approve
 
+terraform-destroy:
+	terraform -chdir=clusters/4.6 destroy -auto-approve
+
 download-scripts:
 	git clone https://github.com/developertyrone/ocp4.git
 
