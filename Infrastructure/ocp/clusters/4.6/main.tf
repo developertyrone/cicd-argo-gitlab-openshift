@@ -7,7 +7,7 @@ module "master" {
   source    = "../../modules/rhcos-static"
   count     = length(var.master_ips)
   name      = "${format("master%02s", count.index + 1)}.${var.cluster_slug}.${var.cluster_domain}"
-  folder    = "${var.vsphere_template_folder}"
+  folder    = var.vsphere_template_folder
   datastore = data.vsphere_datastore.masterstore.id
   disk_size = 120 #120
   memory    = 16384 #16384
