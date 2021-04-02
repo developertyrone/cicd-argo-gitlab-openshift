@@ -54,6 +54,10 @@ install-oc-tools:
 	git clone https://github.com/developertyrone/install-oc-tools
 	./install-oc-tools/install-oc-tools.sh --$(channel) $(version)
 
+uninstall-oc-tools-:
+	git clone https://github.com/developertyrone/install-oc-tools
+	./install-oc-tools/install-oc-tools.sh--uninstall
+
 import-ova:
 	@if [ -z "$(host)" ]; then \
 		govc import.ova -folder=$(folder) -ds=$(store) -name=rhcos-$(version) https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/$(major)/$(version)/rhcos-vmware.x86_64.ova; \
