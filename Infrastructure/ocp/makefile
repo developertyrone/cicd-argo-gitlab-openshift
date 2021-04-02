@@ -52,19 +52,18 @@ update-kubeconfig:
 
 install-oc-tools:
     if [ ! -d "install-oc-tools" ]; then \
-		git clone https://github.com/developertyrone/install-oc-tools \
-		./install-oc-tools/install-oc-tools.sh --$(channel) $(version) \
+		git clone https://github.com/developertyrone/install-oc-tools; \
+		./install-oc-tools/install-oc-tools.sh --$(channel) $(version); \
 	else \
-		./install-oc-tools/install-oc-tools.sh --$(channel) $(version) \
+		./install-oc-tools/install-oc-tools.sh --$(channel) $(version); \
 	fi
-	
 
 uninstall-oc-tools:
 	if [ ! -d "install-oc-tools" ]; then \
-		git clone https://github.com/developertyrone/install-oc-tools \
-		./install-oc-tools/install-oc-tools.sh --uninstall \
+		git clone https://github.com/developertyrone/install-oc-tools; \
+		./install-oc-tools/install-oc-tools.sh --uninstall; \
 	else \
-		./install-oc-tools/install-oc-tools.sh --uninstall \
+		./install-oc-tools/install-oc-tools.sh --uninstall; \
 	fi
 	
 
