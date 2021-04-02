@@ -52,7 +52,7 @@ update-kubeconfig:
 
 install-oc-tools:
 	git clone https://github.com/developertyrone/install-oc-tools
-	./install-oc-tools/install-oc-tools.sh --latest $(version)
+	./install-oc-tools/install-oc-tools.sh --$(channel) $(version)
 
 import-ova:
 	@if [ -z "$(host)" ]; then \

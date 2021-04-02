@@ -82,7 +82,7 @@ EOF
 ```
 
 # Install OC Tools
-make install-oc-tools version=4.6
+make install-oc-tools version=4.6 channel=stable
 
 # Generate manifest for ocp installations
 make generate-config
