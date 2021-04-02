@@ -51,20 +51,20 @@ update-kubeconfig:
 	cp openshift/auth/kubeconfig ~/.kube/config
 
 install-oc-tools:
-    if [ ! -d "/path/to/dir" ]; then \
-		git clone https://github.com/developertyrone/install-oc-tools
-		./install-oc-tools/install-oc-tools.sh --$(channel) $(version)
-	else
-		./install-oc-tools/install-oc-tools.sh --$(channel) $(version)
+    if [ ! -d "install-oc-tools" ]; then \
+		git clone https://github.com/developertyrone/install-oc-tools \
+		./install-oc-tools/install-oc-tools.sh --$(channel) $(version) \
+	else \
+		./install-oc-tools/install-oc-tools.sh --$(channel) $(version) \
 	fi
 	
 
 uninstall-oc-tools:
-	if [ ! -d "/path/to/dir" ]; then \
-		git clone https://github.com/developertyrone/install-oc-tools
-		./install-oc-tools/install-oc-tools.sh --uninstall
-	else
-		./install-oc-tools/install-oc-tools.sh --uninstall
+	if [ ! -d "install-oc-tools" ]; then \
+		git clone https://github.com/developertyrone/install-oc-tools \
+		./install-oc-tools/install-oc-tools.sh --uninstall \
+	else \
+		./install-oc-tools/install-oc-tools.sh --uninstall \
 	fi
 	
 
