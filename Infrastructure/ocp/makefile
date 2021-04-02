@@ -54,7 +54,7 @@ install-oc-tools:
 	git clone https://github.com/developertyrone/install-oc-tools
 	./install-oc-tools/install-oc-tools.sh --$(channel) $(version)
 
-uninstall-oc-tools-:
+uninstall-oc-tools:
 	git clone https://github.com/developertyrone/install-oc-tools
 	./install-oc-tools/install-oc-tools.sh--uninstall
 
