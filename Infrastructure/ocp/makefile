@@ -51,7 +51,7 @@ update-kubeconfig:
 	cp openshift/auth/kubeconfig ~/.kube/config
 
 install-oc-tools:
-    if [ ! -d "install-oc-tools" ]; then \
+	if [ ! -d "install-oc-tools" ]; then \
 		git clone https://github.com/developertyrone/install-oc-tools; \
 		./install-oc-tools/install-oc-tools.sh --$(channel) $(version); \
 	else \
@@ -66,7 +66,6 @@ uninstall-oc-tools:
 		./install-oc-tools/install-oc-tools.sh --uninstall; \
 	fi
 	
-
 import-ova:
 	@if [ -z "$(host)" ]; then \
 		govc import.ova -folder=$(folder) -ds=$(store) -name=rhcos-$(version) https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/$(major)/$(version)/rhcos-vmware.x86_64.ova; \
