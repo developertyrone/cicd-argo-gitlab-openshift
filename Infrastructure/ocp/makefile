@@ -40,8 +40,14 @@ setup-govc:
 	./tools/setup_govc.sh
 
 generate-config:
-	chmod +x ./tools/generate-configs.sh
-	./tools/generate-configs.sh
+	if [ "$(type)" = "ovn" ]; then \
+		chmod +x ./tools/generate-ovn-configs.sh; \
+	    ./tools/generate-ovn-configs.sh; \
+	else \
+		chmod +x ./tools/generate-configs.sh; \
+	    ./tools/generate-configs.sh; \
+	fi
+	
 
 installation-check:
 	cd openshift; openshift-install wait-for install-complete --log-level debug

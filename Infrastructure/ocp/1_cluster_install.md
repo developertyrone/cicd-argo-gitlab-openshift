@@ -85,7 +85,14 @@ EOF
 make install-oc-tools version=4.6 channel=stable
 
 # Generate manifest for ocp installations
+```
 make generate-config
+
+#For OVN instllation
+edit tools generate-ovn-configs.sh
+make generate-config type=ovn
+```
+
 
 # Run Terraform
 ----
@@ -157,4 +164,9 @@ Add an entry in worker_ips
 
 make terraform-plan //Check if the update is correct
 make terraform-apply
+```
+
+# Checking network plugins
+```
+oc get network.config/cluster -o jsonpath='{.status.networkType}{"\n"}'
 ```
